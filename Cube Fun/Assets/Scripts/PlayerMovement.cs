@@ -5,6 +5,8 @@ public class PlayerMovement : MonoBehaviour
 {
 	public float moveSpeed;
 	public GameObject deathParticles;
+	public float jumpHeight = 2;
+	private bool isFalling = false; //need to figure out how to implement so you can't just keep pressing the spacebar
 
 	private float maxSpeed = 5f;
 	private Vector3 input;
@@ -23,13 +25,20 @@ public class PlayerMovement : MonoBehaviour
 
 		if (rigidbody.velocity.magnitude < maxSpeed)
 		{
-			rigidbody.AddForce (input * moveSpeed);
+			rigidbody.AddForce(input * moveSpeed);
 		}
 
 		if (transform.position.y < -2) 
 		{
 			Die ();
 		}
+
+		// Initiating the jump
+		if (Input.GetKeyDown(KeyCode.Space)) 
+		{
+			gameObject.rigidbody.velocity += new Vector3(0,jumpHeight,0);
+		}
+	
 	}
 
 	void OnCollisionEnter(Collision other)
