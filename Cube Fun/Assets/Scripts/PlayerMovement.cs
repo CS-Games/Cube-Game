@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 	public float moveSpeed;
 	public GameObject deathParticles;
 	public float jumpHeight = 2;
-	private bool isFalling = false; //need to figure out how to implement so you can't just keep pressing the spacebar
+	private bool onGround; //need to figure out how to implement so you can't just keep pressing the spacebar
 
 	private float maxSpeed = 5f;
 	private Vector3 input;
@@ -34,9 +34,10 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 		// Initiating the jump
-		if (Input.GetKeyDown(KeyCode.Space)) 
+		if (Input.GetKeyDown(KeyCode.Space) && onGround) 
 		{
 			gameObject.rigidbody.velocity += new Vector3(0,jumpHeight,0);
+			onGround = false;
 		}
 	
 	}
@@ -46,6 +47,10 @@ public class PlayerMovement : MonoBehaviour
 		if(other.transform.tag == "Enemy")
 		{
 			Die();
+		}
+		if (other.transform.tag == "Ground") 
+		{
+			onGround = true;
 		}
 	}
 
