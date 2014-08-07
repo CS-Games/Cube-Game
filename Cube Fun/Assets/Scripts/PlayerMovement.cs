@@ -6,16 +6,18 @@ public class PlayerMovement : MonoBehaviour
 	public float moveSpeed;
 	public GameObject deathParticles;
 	public float jumpHeight = 2;
-	private bool onGround; //need to figure out how to implement so you can't just keep pressing the spacebar
-
-	private float maxSpeed = 5f;
+	private bool onGround;
+	private bool touchWall;
 	private Vector3 input;
 
+	private float maxSpeed = 5f;
 	private Vector3 spawn;
+
 	// Use this for initialization
 	void Start () 
 	{
 		spawn = transform.position;
+		touchWall = false;
 	}
 	
 	// Update is called once per frame
@@ -34,11 +36,12 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 		// Initiating the jump
-		if (Input.GetKeyDown(KeyCode.Space) && onGround) 
+		if (Input.GetKeyDown(KeyCode.Space) && onGround && !touchWall) 
 		{
 			gameObject.rigidbody.velocity += new Vector3(0,jumpHeight,0);
 			onGround = false;
 		}
+
 	
 	}
 
@@ -48,9 +51,21 @@ public class PlayerMovement : MonoBehaviour
 		{
 			Die();
 		}
-		if (other.transform.tag == "Ground") 
+		if(other.transform.tag == "Ground") 
 		{
 			onGround = true;
+		}
+		if(other.transform.tag == "Wall")
+		{
+			touchWall = true;
+		}
+	}
+
+	void OnCollisionExit(Collision other)
+	{
+		if(other.transform.tag == "Wall")
+		{
+			touchWall = false;
 		}
 	}
 
