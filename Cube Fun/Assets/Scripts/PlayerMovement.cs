@@ -17,7 +17,6 @@ public class PlayerMovement : MonoBehaviour
 	void Start () 
 	{
 		spawn = transform.position;
-		touchWall = false;
 	}
 	
 	// Update is called once per frame
@@ -30,6 +29,14 @@ public class PlayerMovement : MonoBehaviour
 			rigidbody.AddForce(input * moveSpeed);
 		}
 
+		// Amount to Move
+//		float moveForward = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
+//		float moveSideways = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;		
+//		
+//		// Move the player
+//		transform.Translate(Vector3.forward * moveForward);
+//		transform.Translate(Vector3.right * moveSideways);
+
 		if (transform.position.y < -2) 
 		{
 			Die ();
@@ -41,7 +48,6 @@ public class PlayerMovement : MonoBehaviour
 			gameObject.rigidbody.velocity += new Vector3(0,jumpHeight,0);
 			onGround = false;
 		}
-
 	
 	}
 
@@ -51,21 +57,13 @@ public class PlayerMovement : MonoBehaviour
 		{
 			Die();
 		}
-		if(other.transform.tag == "Ground") 
+		if (other.transform.tag == "Ground") 
 		{
 			onGround = true;
 		}
-		if(other.transform.tag == "Wall")
+		if (other.transform.tag == "Wall") 
 		{
 			touchWall = true;
-		}
-	}
-
-	void OnCollisionExit(Collision other)
-	{
-		if(other.transform.tag == "Wall")
-		{
-			touchWall = false;
 		}
 	}
 
