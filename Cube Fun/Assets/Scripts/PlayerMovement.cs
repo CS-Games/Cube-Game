@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 	private bool onGround;
 	private bool touchWall;
 	private Vector3 input;
+	public float pickUpTimer = 10;
 
 	private float maxSpeed = 5f;
 	private Vector3 spawn;
@@ -17,7 +18,6 @@ public class PlayerMovement : MonoBehaviour
 	void Start () 
 	{
 		spawn = transform.position;
-		touchWall = false;
 	}
 	
 	// Update is called once per frame
@@ -74,6 +74,16 @@ public class PlayerMovement : MonoBehaviour
 		if (other.transform.tag == "Goal")
 		{
 			GameManager.CompleteLevel();
+		}
+		if (other.transform.tag == "SpeedPickUp")
+		{
+			moveSpeed = 100;
+			Destroy (other.gameObject);
+		}
+		if (other.transform.tag == "BigPickUp")
+		{
+			transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
+			Destroy (other.gameObject);
 		}
 	}
 
